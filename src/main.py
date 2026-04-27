@@ -30,7 +30,7 @@ def cadastrar_produto(nome, validade, qtd):
         data_val = datetime.datetime.strptime(validade, "%Y-%m-%d")
         dias_restantes = (data_val - hoje).days
         
-        status = "Seguro" if dias_restantes > 30 else "Alerta Crítico"
+        status = "Seguro" if dias_restantes > 5 else "Alerta Crítico"
 
         
         cursor.execute(query, (nome, validade, qtd, status))
