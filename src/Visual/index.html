@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ValidaFlow - Gestão de Estoque</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="script.js"></script>
+</head>
+<body>
+<div class="app">
+  <div class="mobile-header">
+    <div class="brand-name">ValidaFlow</div>
+    <button class="hamburger" onclick="toggleMobileMenu()">☰</button>
+  </div>
+  <div id="sidebar-overlay" class="sidebar-overlay" onclick="closeMobileMenu()"></div>
+
+
+  <div class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-name">ValidaFlow</div>
+      <div class="brand-sub">Gestão de Estoque</div>
+    </div>
+    <div class="nav">
+      <div class="nav-item active" data-target="inicio" onclick="switchTab('inicio', 'Painel de Controle')">
+        <div class="dot dot-blue">⌂</div>
+        Início
+      </div>
+     
+      <div class="nav-group">Conteúdo</div>
+      <div class="nav-item" data-target="inventario" onclick="switchTab('inventario', 'Inventário Completo')">
+        <div class="dot dot-gray">▤</div>
+        Inventário
+      </div>
+      <div class="nav-item" data-target="relatorios" onclick="switchTab('relatorios', 'Relatórios')">
+        <div class="dot dot-gray">◷</div>
+        Relatórios
+      </div>
+      <div class="nav-item" data-target="configuracoes" onclick="switchTab('configuracoes', 'Configurações')">
+        <div class="dot dot-gray">⚙</div>
+        Configurações
+      </div>
+
+
+      <div class="nav-group">Gestão</div>
+      <div class="nav-item" data-target="gerenciar" onclick="switchTab('gerenciar', 'Gerenciar Produtos')">
+        <div class="dot dot-gray">✎</div>
+        Gerenciar Produtos
+      </div>
+    </div>
+    <div class="user-area">
+      <div class="user-chip">
+        <div class="avatar">AD</div>
+        <div>
+          <div class="user-name">Administração</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="main">
+    <div class="topbar">
+      <div>
+        <div class="page-title" id="page-title-display">Painel de Controle</div>
+        <div class="page-date">Estoque · 27 de abril de 2026</div>
+      </div>
+      <div class="header-actions">
+        <button class="btn-icon" id="theme-toggle" onclick="toggleTheme()" title="Alternar Modo Escuro/Claro">☀</button>
+        <button class="btn-add" onclick="switchTab('gerenciar', 'Gerenciar Produtos')">+ Novo produto</button>
+      </div>
+    </div>
+
+
+    <div id="inicio" class="section active">
+      <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-label">Total de itens</div>
+        <div class="metric-value">1.248</div>
+        <div class="metric-sub">em 6 categorias</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Produtos normais</div>
+        <div class="metric-value">1.104</div>
+        <div class="metric-sub">venc. +90 dias</div>
+      </div>
+      <div class="metric-card alert">
+        <div class="metric-label">Alerta crítico</div>
+        <div class="metric-value">37</div>
+        <div class="metric-sub">venc. em até 30 dias</div>
+      </div>
+      <div class="metric-card warn">
+        <div class="metric-label">Prejuízo estimado</div>
+        <div class="metric-value">R$ 4.290</div>
+        <div class="metric-sub">se não vendidos</div>
+      </div>
+    </div>
+
+
+    <div class="content-row">
+      <div class="panel">
+        <div class="panel-title">Saúde do estoque</div>
+        <div class="chart-area">
+          <div class="bar-group">
+            <div class="bar-wrap">
+              <div class="bar bar-safe" style="height:65px"></div>
+              <div class="bar bar-warn" style="height:18px"></div>
+              <div class="bar bar-crit" style="height:8px"></div>
+            </div>
+            <div class="bar-lbl">Jan</div>
+          </div>
+          <div class="bar-group">
+            <div class="bar-wrap">
+              <div class="bar bar-safe" style="height:72px"></div>
+              <div class="bar bar-warn" style="height:22px"></div>
+              <div class="bar bar-crit" style="height:10px"></div>
+            </div>
+            <div class="bar-lbl">Fev</div>
+          </div>
+          <div class="bar-group">
+            <div class="bar-wrap">
+              <div class="bar bar-safe" style="height:60px"></div>
+              <div class="bar bar-warn" style="height:25px"></div>
+              <div class="bar bar-crit" style="height:14px"></div>
+            </div>
+            <div class="bar-lbl">Mar</div>
+          </div>
+          <div class="bar-group">
+            <div class="bar-wrap">
+              <div class="bar bar-safe" style="height:78px"></div>
+              <div class="bar bar-warn" style="height:16px"></div>
+              <div class="bar bar-crit" style="height:7px"></div>
+            </div>
+            <div class="bar-lbl">Abr</div>
+          </div>
+          <div class="bar-group">
+            <div class="bar-wrap">
+              <div class="bar bar-safe" style="height:55px"></div>
+              <div class="bar bar-warn" style="height:30px"></div>
+              <div class="bar bar-crit" style="height:19px"></div>
+            </div>
+            <div class="bar-lbl">Mai</div>
+          </div>
+          <div class="bar-group">
+            <div class="bar-wrap">
+              <div class="bar bar-safe" style="height:82px"></div>
+              <div class="bar bar-warn" style="height:12px"></div>
+              <div class="bar bar-crit" style="height:5px"></div>
+            </div>
+            <div class="bar-lbl">Jun</div>
+          </div>
+        </div>
+        <div class="legend">
+          <div class="leg-item"><div class="leg-dot dot-safe"></div>Seguro</div>
+          <div class="leg-item"><div class="leg-dot dot-warn"></div>Atenção</div>
+          <div class="leg-item"><div class="leg-dot dot-crit"></div>Crítico</div>
+        </div>
+      </div>
+
+
+      <div class="panel">
+        <div class="panel-title">Vencem primeiro</div>
+        <div class="priority-list">
+          <div class="pri-item">
+            <div class="pri-num">01</div>
+            <div class="pri-name">Leite Integral 1L</div>
+            <div class="pri-days crit">3 dias</div>
+          </div>
+          <div class="pri-item">
+            <div class="pri-num">02</div>
+            <div class="pri-name">Queijo Mussarela</div>
+            <div class="pri-days crit">7 dias</div>
+          </div>
+          <div class="pri-item">
+            <div class="pri-num">03</div>
+            <div class="pri-name">Iogurte Natural</div>
+            <div class="pri-days warn">15 dias</div>
+          </div>
+          <div class="pri-item">
+            <div class="pri-num">04</div>
+            <div class="pri-name">Presunto Fatiado</div>
+            <div class="pri-days warn">18 dias</div>
+          </div>
+          <div class="pri-item">
+            <div class="pri-num">05</div>
+            <div class="pri-name">Pão de Forma</div>
+            <div class="pri-days warn">22 dias</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="inventory-panel">
+      <div class="inv-header">
+        <input class="search-box" type="text" placeholder="Pesquisar produto ou categoria..." readonly />
+        <button class="filter-btn">Filtro</button>
+      </div>
+      <table class="inv-table">
+        <thead>
+          <tr>
+            <th>Produto</th>
+            <th>Categoria</th>
+            <th>Validade</th>
+            <th>Qtd</th>
+            <th>Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="inv-row row-crit">
+            <td>Leite Integral 1L</td>
+            <td>Laticínios</td>
+            <td>30/04/2026</td>
+            <td>24 un</td>
+            <td><span class="tag tag-crit">Crítico</span></td>
+            <td><button class="more-btn">⋮</button></td>
+          </tr>
+          <tr class="inv-row row-crit">
+            <td>Queijo Mussarela</td>
+            <td>Laticínios</td>
+            <td>04/05/2026</td>
+            <td>12 un</td>
+            <td><span class="tag tag-crit">Crítico</span></td>
+            <td><button class="more-btn">⋮</button></td>
+          </tr>
+          <tr class="inv-row">
+            <td>Iogurte Natural</td>
+            <td>Laticínios</td>
+            <td>12/05/2026</td>
+            <td>36 un</td>
+            <td><span class="tag tag-warn">Atenção</span></td>
+            <td><button class="more-btn">⋮</button></td>
+          </tr>
+          <tr class="inv-row">
+            <td>Achocolatado 200ml</td>
+            <td>Bebidas</td>
+            <td>18/06/2026</td>
+            <td>80 un</td>
+            <td><span class="tag tag-warn">Atenção</span></td>
+            <td><button class="more-btn">⋮</button></td>
+          </tr>
+          <tr class="inv-row">
+            <td>Arroz Parboilizado 5kg</td>
+            <td>Grãos</td>
+            <td>10/09/2026</td>
+            <td>50 un</td>
+            <td><span class="tag tag-safe">Seguro</span></td>
+            <td><button class="more-btn">⋮</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    </div>
+
+
+    <!-- INVENTÁRIO -->
+    <div id="inventario" class="section">
+      <div class="inventory-panel" style="flex: 1;">
+        <div class="inv-header">
+          <input class="search-box" type="text" placeholder="Pesquisar produto, categoria ou quantidade..." />
+          <button class="filter-btn">⋯ Filtro</button>
+        </div>
+        <table class="inv-table">
+          <thead>
+            <tr>
+              <th>Produto</th>
+              <th>Categoria</th>
+              <th>Validade</th>
+              <th>Qtd</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="inv-row row-crit">
+              <td>Leite Integral 1L</td>
+              <td>Laticínios</td>
+              <td>30/04/2026</td>
+              <td>24 un</td>
+              <td><span class="tag tag-crit">Crítico</span></td>
+              <td><button class="more-btn">⋮</button></td>
+            </tr>
+            <tr class="inv-row row-crit">
+              <td>Queijo Mussarela</td>
+              <td>Laticínios</td>
+              <td>04/05/2026</td>
+              <td>12 un</td>
+              <td><span class="tag tag-crit">Crítico</span></td>
+              <td><button class="more-btn">⋮</button></td>
+            </tr>
+            <tr class="inv-row">
+              <td>Iogurte Natural</td>
+              <td>Laticínios</td>
+              <td>12/05/2026</td>
+              <td>36 un</td>
+              <td><span class="tag tag-warn">Atenção</span></td>
+              <td><button class="more-btn">⋮</button></td>
+            </tr>
+            <tr class="inv-row">
+              <td>Achocolatado 200ml</td>
+              <td>Bebidas</td>
+              <td>18/06/2026</td>
+              <td>80 un</td>
+              <td><span class="tag tag-warn">Atenção</span></td>
+              <td><button class="more-btn">⋮</button></td>
+            </tr>
+            <tr class="inv-row">
+              <td>Arroz Parboilizado 5kg</td>
+              <td>Grãos</td>
+              <td>10/09/2026</td>
+              <td>50 un</td>
+              <td><span class="tag tag-safe">Seguro</span></td>
+              <td><button class="more-btn">⋮</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
+    <!-- RELATÓRIOS -->
+    <div id="relatorios" class="section">
+      <div class="panel">
+        <div class="panel-title">Relatórios Gerais</div>
+        <p style="color: #8B90AD; font-size: 14px;">Os relatórios detalhados estarão disponíveis em breve.</p>
+      </div>
+    </div>
+
+
+    <!-- CONFIGURAÇÕES -->
+    <div id="configuracoes" class="section">
+      <div class="panel">
+        <div class="panel-title">Configurações do Sistema</div>
+        <p style="color: #8B90AD; font-size: 14px;">Preferências e ajustes de conta.</p>
+      </div>
+    </div>
+
+
+    <!-- GERENCIAR PRODUTOS (CRUD) -->
+    <div id="gerenciar" class="section">
+      <div class="panel" style="max-width: 600px; margin: 0 auto; width: 100%;">
+        <div class="panel-title">Formulário de Cadastro</div>
+        <form class="crud-form" onsubmit="event.preventDefault(); switchTab('inicio', 'Painel de Controle');">
+          <div class="form-group">
+            <label>Nome do Produto</label>
+            <input type="text" placeholder="Ex: Leite Integral 1L" class="form-input" required>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Data de Validade</label>
+              <input type="date" class="form-input" required>
+            </div>
+            <div class="form-group">
+              <label>Categoria</label>
+              <select class="form-input" required>
+                <option value="">Selecione...</option>
+                <option>Laticínios</option>
+                <option>Bebidas</option>
+                <option>Grãos</option>
+                <option>Outros</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Quantidade</label>
+              <input type="number" placeholder="0" class="form-input" required>
+            </div>
+          </div>
+          <div class="form-actions" style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
+             <button type="button" class="btn-secondary" onclick="switchTab('inicio', 'Painel de Controle')">Cancelar</button>
+             <button type="submit" class="btn-primary">Salvar Produto</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+
+  </div>
+</div>
+
+
+
