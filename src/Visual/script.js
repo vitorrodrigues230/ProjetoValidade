@@ -1,4 +1,4 @@
-// --- FUNÇÕES DE NAVEGAÇÃO E INTERFACE ---
+
 
   function switchTab(tabId, title) {
     document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
@@ -64,6 +64,7 @@
       tabelaCorpo.innerHTML = ''; 
 
       dados.forEach(item => {
+        console.log("Dados do item vindo do banco:", item);
         const tr = document.createElement('tr');
         
         // Lógica de Estilo Premium (Cores de Fundo e Tags)
@@ -87,15 +88,19 @@
         if (rowClass) tr.classList.add(rowClass);
 
         // Monta o HTML da linha exatamente como no seu design
+        const idParaUso = item.id_externo;
+
+        // Dentro do seu dados.forEach no carregarInventario:
         tr.innerHTML = `
-          <td>${item.produto}</td>
-          <td>${item.categoria}</td>
-          <td>${item.validade}</td>
-          <td>${item.qtd} un</td>
-          <td><span class="status-tag ${tagClass}">${item.status}</span></td>
-          <td><i class="fas fa-ellipsis-v icon-menu"></i></td>
-        `;
-        
+            <td style="cursor:pointer; font-weight:bold;" onclick="vincularData(${idParaUso}, '${item.produto}')">
+                ${item.produto}
+            </td>
+            <td>${item.categoria}</td>
+            <td>${item.validade || '---'}</td>
+            <td>${item.qtd} un</td>
+            <td><span class="status-tag ${tagClass}">${item.status}</span></td>
+            <td><i class="fas fa-ellipsis-v icon-menu"></i></td>
+        `;    
         tabelaCorpo.appendChild(tr);
       });
 
@@ -117,3 +122,39 @@
     // Dispara a busca de dados reais
     carregarInventario();
   });
+
+  async function vincularData(idExterno, nomeProduto) {
+    if (!idExterno) {
+        alert("Erro: ID do produto não encontrado.");
+        return;
+    }
+    const dataInput = prompt(`Digite a data para ${nomeProduto} (AAAA-MM-DD):`);
+    
+    if (dataInput) {
+        const payload = {
+            id_externo: parseInt(idExterno),
+            data_validade: dataInput.trim()
+        };
+        
+        console.log("Enviando para o servidor:", payload); // Isso ajuda a debugar!
+
+        try {
+            const response = await fetch('http://127.0.0.1:8000/api/vincular-validade', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (response.ok) {
+                alert('Sucesso! Validade registrada.');
+                location.reload();
+            } else {
+                const erroDetalhado = await response.json();
+                console.error("Erro detalhado do FastAPI:", erroDetalhado);
+                alert("Erro de formato. Verifique o console (F12) para detalhes.");
+            }
+        } catch (error) {
+            console.error("Erro na comunicação:", error);
+        }
+    }
+}
