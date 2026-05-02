@@ -91,16 +91,17 @@
         const idParaUso = item.id_externo;
 
         // Dentro do seu dados.forEach no carregarInventario:
-        tr.innerHTML = `
-            <td style="cursor:pointer; font-weight:bold;" onclick="vincularData(${idParaUso}, '${item.produto}')">
-                ${item.produto}
-            </td>
-            <td>${item.categoria}</td>
-            <td>${item.validade || '---'}</td>
-            <td>${item.qtd} un</td>
-            <td><span class="status-tag ${tagClass}">${item.status}</span></td>
-            <td><i class="fas fa-ellipsis-v icon-menu"></i></td>
-        `;    
+        // Dentro do seu dados.forEach no carregarInventario:
+tr.innerHTML = `
+    <td class="col-produto" style="cursor:pointer; font-weight:bold;" onclick="vincularData(${idParaUso}, '${item.produto}')">
+        ${item.produto}
+    </td>
+    <td class="col-categoria">${item.categoria}</td>
+    <td>${item.validade || '---'}</td>
+    <td>${item.qtd} un</td>
+    <td><span class="status-tag ${tagClass}">${item.status}</span></td>
+    <td><i class="fas fa-ellipsis-v icon-menu"></i></td>
+`;    
         tabelaCorpo.appendChild(tr);
       });
 
@@ -158,3 +159,103 @@
         }
     }
 }
+async function carregarVencimentosProximos() {
+    const response = await fetch('http://127.0.0.1:8000/api/vencimentos_proximos');
+    const dados = await response.json();
+    
+    const container = document.getElementById('lista-vencimentos'); // Verifique esse ID no seu HTML
+    container.innerHTML = ''; // Limpa a lista antiga
+
+    dados.forEach((item, index) => {
+        const itemHtml = `
+            <div class="vencimento-item">
+                <span class="numero">${(index + 1).toString().padStart(2, '0')}</span>
+                <span class="nome-produto">${item.produto}</span>
+                <span class="badge ${item.classe_cor}">${item.dias_texto}</span>
+            </div>
+        `;
+        container.innerHTML += itemHtml;
+    });
+}
+
+
+// Chame a função quando a página carregar
+document.addEventListener('DOMContentLoaded', () => {
+    carregarInventario();
+    carregarVencimentosProximos();
+});
+async function carregarVencimentosLaterais() {
+    try {
+        const response = await fetch('http://127.0.0.1:8000/api/vencimentos_proximos');
+        const dados = await response.json();
+        
+        const container = document.getElementById('lista-vencimentos-lateral');
+        if (!container) return;
+        container.innerHTML = ''; // Limpa os dados estáticos
+
+        dados.forEach((item, index) => {
+            // Monta o HTML seguindo exatamente o design do seu print
+            const itemHtml = `
+                <div class="vencimento-row">
+                    <div class="vencimento-info" style="display: flex; align-items: center; gap: 10px;">
+                        <span class="vencimento-pos">${(index + 1).toString().padStart(2, '0')}</span>
+                        <span class="vencimento-nome">${item.produto}</span>
+                    </div>
+                    <div class="vencimento-status">
+                        <span class="badge-vencimento ${item.classe_cor}">${item.dias_texto}</span>
+                    </div>
+                </div>
+            `;
+            container.innerHTML += itemHtml;
+        });
+    } catch (erro) {
+        console.error("Erro ao carregar lista lateral:", erro);
+    }
+}
+document.addEventListener('DOMContentLoaded', () => {
+    // Chama as duas funções para popular o dashboard
+    carregarInventario(); 
+    carregarVencimentosLaterais();
+});
+
+// Chame ela no final do arquivo ou dentro do DOMContentLoaded
+carregarVencimentosLaterais();
+function configurarBusca() {
+    const inputBusca = document.getElementById('input-busca');
+    // Usamos um seletor mais genérico caso o ID mude
+    const tabelaCorpo = document.querySelector('tbody'); 
+
+    if (!inputBusca || !tabelaCorpo) return;
+
+    inputBusca.addEventListener('keyup', () => {
+        const termo = inputBusca.value.toLowerCase().trim();
+        const linhas = tabelaCorpo.querySelectorAll('tr');
+
+        let linhasEncontradas = 0;
+
+linhas.forEach(linha => {
+    const nome = linha.querySelector('.col-produto')?.textContent.toLowerCase() || "";
+    const categoria = linha.querySelector('.col-categoria')?.textContent.toLowerCase() || "";
+
+    if (nome.includes(termo) || categoria.includes(termo)) {
+        linha.style.display = ""; 
+        linhasEncontradas++; // Se encontrou, aumenta o contador
+    } else {
+        linha.style.display = "none"; 
+    }
+});
+// Fora do loop, você verifica se o contador é zero
+const msgVazia = document.getElementById('mensagem-vazia');
+if (msgVazia) {
+    msgVazia.style.display = (linhasEncontradas === 0 && termo !== "") ? "block" : "none";
+}
+    });
+}
+
+
+// Lembre-se de chamar a função quando o DOM carregar
+document.addEventListener('DOMContentLoaded', () => {
+    carregarInventario();
+    carregarVencimentosLaterais();
+    configurarBusca(); // Ativa a busca
+});

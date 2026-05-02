@@ -612,3 +612,222 @@
     .btn-add { width: 100%; justify-content: center; padding: 12px; font-size: 14px; }
     .main { padding: 16px; }
   }
+  /* Container que segura a lista */
+#lista-vencimentos-lateral {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-top: 15px;
+}
+
+/* O Card de cada produto */
+.vencimento-card {
+    background: rgba(255, 255, 255, 0.05); /* Fundo levemente transparente */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.2s;
+}
+
+.vencimento-card:hover {
+    transform: translateX(5px);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.vencimento-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.vencimento-rank {
+    color: #4a5568;
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+.vencimento-nome {
+    color: #e2e8f0;
+    font-weight: 500;
+}
+
+/* Estilo dos Badges (as tags coloridas) */
+.vencimento-badge {
+    padding: 4px 12px;
+    border-radius: 8px;
+    font-size: 0.85em;
+    font-weight: 600;
+}
+
+.badge-critico {
+    background: rgba(255, 0, 0, 0.2);
+    color: #ff4d4d;
+    border: 1px solid rgba(255, 77, 77, 0.3);
+}
+
+.badge-alerta {
+    background: rgba(255, 165, 0, 0.2);
+    color: #ffa500;
+    border: 1px solid rgba(255, 165, 0, 0.3);
+}
+#lista-vencimentos-lateral {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.vencimento-row {
+    display: flex;
+    justify-content: space-between; /* Empurra o badge para a direita */
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* Linha divisória sutil */
+}
+
+.vencimento-row:last-child {
+    border-bottom: none; /* Remove a linha do último item */
+}
+
+.vencimento-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.vencimento-pos {
+    color: #6366f1; /* Um roxo/azul para o ranking */
+    font-weight: bold;
+    font-family: monospace;
+}
+
+.vencimento-nome {
+    color: #ffffff;
+    font-size: 0.95rem;
+    font-weight: 400;
+}
+
+/* Estilo dos Badges Retangulares */
+.badge-vencimento {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    min-width: 70px;
+    text-align: center;
+}
+
+.badge-critico {
+    background: rgba(239, 68, 68, 0.15); /* Vermelho suave */
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.badge-alerta {
+    background: rgba(245, 158, 11, 0.15); /* Laranja suave */
+    color: #f59e0b;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+}
+/* Container principal */
+#lista-vencimentos-lateral {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+/* A "Linha" da Tabela */
+.vencimento-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 8px; /* Espaçamento da linha */
+    border-bottom: 1px solid rgba(128, 128, 128, 0.2); /* A linha divisória sutil */
+    transition: background 0.2s;
+}
+
+/* Efeito ao passar o mouse */
+.vencimento-row:hover {
+    background: rgba(128, 128, 128, 0.05);
+}
+
+/* Ajuste de visibilidade do texto */
+.vencimento-nome {
+    /* Em vez de cor fixa, usamos uma que se adapte */
+    color: var(--text-color, #2d3748); 
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+/* No tema escuro, a variável muda (ajuste conforme seu sistema de temas) */
+[data-theme='dark'] .vencimento-nome {
+    color: #e2e8f0;
+}
+
+/* Se você não usa variáveis CSS, pode forçar uma cor que funcione em ambos, 
+   como um cinza médio/escuro ou usar o seletor do seu tema claro: */
+.light-mode .vencimento-nome {
+    color: #1a202c !important; /* Força o preto/cinza escuro no tema claro */
+}
+
+.vencimento-pos {
+    color: #4f46e5; /* Roxo vibrante para o número */
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+    width: 25px;
+}
+/* Estilo para o nome do produto - Forçando visibilidade */
+.vencimento-nome {
+    color: #f8fafc !important; /* Um branco levemente azulado, muito visível no escuro */
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+/* Se o seu sistema de troca de tema adiciona uma classe 'light' ou 'light-mode' no body */
+.light-mode .vencimento-nome, 
+body.light .vencimento-nome {
+    color: #1e293b !important; /* Azul marinho muito escuro para o tema claro */
+}
+
+/* Ajuste na linha para ela não sumir totalmente no escuro */
+.vencimento-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Linha clara e sutil no escuro */
+}
+/* Cores para o Tema Escuro (Padrão) */
+:root {
+    --tabela-linha: rgba(255, 255, 255, 0.15); /* Linha mais visível no escuro */
+    --texto-produto: #f8fafc;
+}
+
+/* Cores para o Tema Claro */
+/* Ajuste o seletor (.light-mode ou .light) conforme o que seu JS usa no body */
+body.light-mode {
+    --tabela-linha: rgba(0, 0, 0, 0.1); /* Linha cinza suave no fundo branco */
+    --texto-produto: #1e293b;
+}
+.vencimento-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 8px;
+    /* Usando a variável para a borda */
+    border-bottom: 1px solid var(--tabela-linha); 
+    transition: all 0.2s ease;
+}
+
+.vencimento-nome {
+    /* Usando a variável para o texto */
+    color: var(--texto-produto) !important;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+/* Efeito de destaque ao passar o mouse */
+.vencimento-row:hover {
+    background: rgba(128, 128, 128, 0.08);
+}

@@ -32,7 +32,7 @@ def get_inventario():
     conn = get_db_connection()
     # O RealDictCursor permite acessar as colunas pelo nome: r['produto']
     cur = conn.cursor(cursor_factory=RealDictCursor) 
-    
+    hoje = date.today()
     try:
         # Verifique se os nomes das colunas (id_externo, status_ia) estão corretos no seu banco
         cur.execute("""
@@ -42,17 +42,31 @@ def get_inventario():
         
         inventario = []
         for r in dados:
-        
+            validade = r['data_validade']
+            status_calculado = "Seguro"
             data_formatada = "---"
-            if r.get('data_validade'):
-                data_formatada = r['data_validade'].strftime('%d/%m/%Y')
+            if validade:
+                data_formatada = validade.strftime('%d/%m/%Y')
+                # Calculamos a diferença em dias
+                dias_restantes = (validade - hoje).days
+
+                # Lógica de Automação
+                if dias_restantes < 0:
+                    status_calculado = "Crítico"  # Vencido entra como Crítico no seu CSS
+                elif dias_restantes <= 7:
+                    status_calculado = "Crítico"
+                elif dias_restantes <= 15:
+                    status_calculado = "Atenção"
+                else:
+                    status_calculado = "Seguro"
+
             inventario.append({
-            "id_externo": r['id_externo'],
-            "produto": r['produto'],
-            "categoria": r['categoria'],
-            "validade": data_formatada,
-            "qtd": r['qtd'],    
-            "status": r['status'] 
+                "id_externo": r['id_externo'],
+                "produto": r['produto'],
+                "categoria": r['categoria'],
+                "validade": data_formatada,
+                "qtd": r['qtd'],
+                "status": status_calculado  # Agora o status é dinâmico!
             })
             
         return inventario
@@ -134,6 +148,41 @@ async def vincular_validade(payload: dict):
         conn.rollback()
         print(f"Erro no banco: {e}")
         return {"status": "erro", "mensagem": str(e)}
+@app.get("/api/vencimentos_proximos")
+def get_vencimentos_proximos():
+    conn = get_db_connection()
+    cur = conn.cursor(cursor_factory=RealDictCursor)
+    hoje = date.today()
+    
+    try:
+        # Buscamos os 5 que vencem primeiro (que não venceram há muito tempo)
+        cur.execute("""
+            SELECT nome as produto, data_validade
+            FROM produtos
+            WHERE data_validade IS NOT NULL
+            ORDER BY data_validade ASC
+            LIMIT 5
+        """)
+        
+        dados = cur.fetchall()
+        top_vencimentos = []
+
+        for r in dados:
+            dias = (r['data_validade'] - hoje).days
+            
+            # Formatação do texto do badge (ex: "3 dias" ou "Vencido")
+            texto_dias = f"{dias} dias" if dias >= 0 else "Vencido"
+            
+            # Define a cor do badge com base na urgência
+            cor_badge = "badge-critico" if dias <= 7 else "badge-alerta"
+
+            top_vencimentos.append({
+                "produto": r['produto'],
+                "dias_texto": texto_dias,
+                "classe_cor": cor_badge
+            })
+            
+        return top_vencimentos
     finally:
         cur.close()
         conn.close()

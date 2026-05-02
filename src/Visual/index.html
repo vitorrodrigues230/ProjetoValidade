@@ -158,43 +158,22 @@
       </div>
 
 
-      <div class="panel">
-        <div class="panel-title">Vencem primeiro</div>
-        <div class="priority-list">
-          <div class="pri-item">
-            <div class="pri-num">01</div>
-            <div class="pri-name">Leite Integral 1L</div>
-            <div class="pri-days crit">3 dias</div>
-          </div>
-          <div class="pri-item">
-            <div class="pri-num">02</div>
-            <div class="pri-name">Queijo Mussarela</div>
-            <div class="pri-days crit">7 dias</div>
-          </div>
-          <div class="pri-item">
-            <div class="pri-num">03</div>
-            <div class="pri-name">Iogurte Natural</div>
-            <div class="pri-days warn">15 dias</div>
-          </div>
-          <div class="pri-item">
-            <div class="pri-num">04</div>
-            <div class="pri-name">Presunto Fatiado</div>
-            <div class="pri-days warn">18 dias</div>
-          </div>
-          <div class="pri-item">
-            <div class="pri-num">05</div>
-            <div class="pri-name">Pão de Forma</div>
-            <div class="pri-days warn">22 dias</div>
-          </div>
-        </div>
-      </div>
+      <div class="vencem-primeiro-container">
+    <h3>VENCEM PRIMEIRO</h3>
+    <div id="lista-vencimentos-lateral"> <!-- ADICIONE ESSE ID AQUI -->
+        <!-- Apague os itens estáticos (Leite, Queijo...) que estão aqui dentro -->
     </div>
+</div>
 
 
     <div class="inventory-panel">
       <div class="inv-header">
-        <input class="search-box" type="text" placeholder="Pesquisar produto ou categoria..." readonly />
+        <input class="search-box" autocomplete="off" id="input-busca" type="text" placeholder="Pesquisar produto ou categoria..."/>
         <button class="filter-btn">Filtro</button>
+      </div>
+      <div id="mensagem-vazia" style="display: none; text-align: center; padding: 20px; color: #64748b;">
+    <i class="fas fa-search" style="margin-bottom: 10px; font-size: 24px;"></i>
+    <p>🔍 Nenhum produto encontrado para sua busca.</p>
       </div>
       <table class="inv-table">
         <thead>
@@ -258,7 +237,7 @@
     <div id="inventario" class="section">
       <div class="inventory-panel" style="flex: 1;">
         <div class="inv-header">
-          <input class="search-box" type="text" placeholder="Pesquisar produto, categoria ou quantidade..." />
+          <input class="search-box" autocomplete="off" id="input-busca" type="text" placeholder="Pesquisar produto, categoria ou quantidade..." />
           <button class="filter-btn">⋯ Filtro</button>
         </div>
         <table class="inv-table">
